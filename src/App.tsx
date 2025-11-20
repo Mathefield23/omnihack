@@ -16,7 +16,9 @@ function App() {
           </div>
           <div className="flex items-center gap-4">
             <button className="text-gray-700 hover:text-omnihack-primary font-medium transition-colors">Entrar</button>
-            <button className="bg-omnihack-primary text-white px-6 py-2.5 rounded-lg hover:bg-omnihack-secondary transition-colors font-medium">Cadastrar</button>
+            <a href="/cadastro">
+              <button className="bg-omnihack-primary text-white px-6 py-2.5 rounded-lg hover:bg-omnihack-secondary transition-colors font-medium">Cadastrar</button>
+            </a>
           </div>
         </nav>
       </header>
