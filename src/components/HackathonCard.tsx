@@ -38,6 +38,10 @@ export const HackathonCard: React.FC<HackathonCardProps> = ({
 
     setIsDeleting(true);
     try {
+      // Check current user session
+      const { data: { user } } = await supabase.auth.getUser();
+      console.log('Current user:', user?.id);
+      console.log('Hackathon empresa_id:', hackathon);
       console.log('Deleting hackathon:', hackathon.id);
 
       const { data, error } = await supabase
