@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Plus } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { BigNumbers } from '../components/BigNumbers';
 import { HackathonList } from '../components/HackathonList';
 import { CreateHackathonModal } from '../components/CreateHackathonModal';
 import { DashboardHeader } from '../components/DashboardHeader';
+import { HackathonSectionHeader } from '../components/HackathonSectionHeader';
 
 interface Profile {
   id: string;
@@ -139,16 +139,7 @@ export const EmpresaDashboard = () => {
           loading={false}
         />
 
-        <div className="mb-8 flex justify-between items-center">
-          <h2 className="text-2xl font-semibold">Meus Hackathons</h2>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-omnihack-primary text-white px-6 py-3 rounded-lg hover:bg-omnihack-secondary transition-colors font-medium flex items-center gap-2 shadow-md hover:shadow-lg"
-          >
-            <Plus className="w-5 h-5" />
-            Cadastrar Novo Hackathon
-          </button>
-        </div>
+        <HackathonSectionHeader onCreateClick={() => setIsModalOpen(true)} />
 
         <HackathonList hackathons={hackathons} loading={false} />
       </div>
