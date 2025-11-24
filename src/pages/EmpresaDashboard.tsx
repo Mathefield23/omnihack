@@ -62,7 +62,6 @@ export const EmpresaDashboard = () => {
         .from('hackathons')
         .select('*')
         .eq('empresa_id', user.id)
-        .is('deleted_at', null)
         .order('data', { ascending: true });
 
       if (hackathonsError) throw hackathonsError;
@@ -142,11 +141,7 @@ export const EmpresaDashboard = () => {
 
         <HackathonSectionHeader onCreateClick={() => setIsModalOpen(true)} />
 
-        <HackathonList
-          hackathons={hackathons}
-          loading={false}
-          onHackathonDeleted={fetchData}
-        />
+        <HackathonList hackathons={hackathons} loading={false} />
       </div>
 
       <CreateHackathonModal
