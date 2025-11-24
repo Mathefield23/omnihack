@@ -1,6 +1,10 @@
 import { Code2, Calendar, Users, Trophy, ArrowRight, Zap, Target, Rocket, Briefcase } from 'lucide-react';
+import { useState } from 'react';
+import { LoginModal } from './components/LoginModal';
 
 function App() {
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-white">
       <header className="border-b border-gray-200">
@@ -15,7 +19,12 @@ function App() {
             <a href="#sobre" className="text-gray-600 hover:text-omnihack-primary transition-colors">Sobre</a>
           </div>
           <div className="flex items-center gap-4">
-            <button className="text-gray-700 hover:text-omnihack-primary font-medium transition-colors">Entrar</button>
+            <button
+              onClick={() => setIsLoginOpen(true)}
+              className="text-gray-700 hover:text-omnihack-primary font-medium transition-colors"
+            >
+              Entrar
+            </button>
             <a href="/cadastro">
               <button className="bg-omnihack-primary text-white px-6 py-2.5 rounded-lg hover:bg-omnihack-secondary transition-colors font-medium">Cadastrar</button>
             </a>
@@ -327,6 +336,11 @@ function App() {
           </div>
         </div>
       </footer>
+
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+      />
     </div>
   );
 }
