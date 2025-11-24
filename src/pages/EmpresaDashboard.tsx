@@ -114,6 +114,15 @@ export const EmpresaDashboard = () => {
     fetchData();
   };
 
+  const handleHackathonDeleted = (id: string) => {
+    setHackathons((prev) => prev.filter((h) => h.id !== id));
+    const deletedHackathon = hackathons.find((h) => h.id === id);
+    if (deletedHackathon) {
+      setTotalParticipants((prev) => prev - (deletedHackathon.participant_count || 0));
+      setTotalPremios((prev) => prev - Number(deletedHackathon.premio));
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -141,7 +150,11 @@ export const EmpresaDashboard = () => {
 
         <HackathonSectionHeader onCreateClick={() => setIsModalOpen(true)} />
 
-        <HackathonList hackathons={hackathons} loading={false} />
+        <HackathonList
+          hackathons={hackathons}
+          loading={false}
+          onHackathonDeleted={handleHackathonDeleted}
+        />
       </div>
 
       <CreateHackathonModal
