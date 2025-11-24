@@ -42,32 +42,20 @@ export const HackathonCard: React.FC<HackathonCardProps> = ({
     setIsDeleting(true);
 
     try {
-      const { data: userData } = await supabase.auth.getUser();
-      console.log('Current user ID:', userData?.user?.id);
-      console.log('Hackathon ID:', id);
-
-      const { data: hackathonData } = await supabase
-        .from('hackathons')
-        .select('empresa_id')
-        .eq('id', id)
-        .single();
-
-      console.log('Hackathon empresa_id:', hackathonData?.empresa_id);
-
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('hackathons')
         .update({ deleted_at: new Date().toISOString() })
-        .eq('id', id)
-        .select();
+        .eq('id', id);
 
-      console.log('Update result:', { data, error });
-
-      if (error) throw error;
+      if (error) {
+        console.error('Delete error:', error);
+        throw error;
+      }
 
       onDelete();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting hackathon:', error);
-      alert('Erro ao excluir hackathon. Tente novamente.');
+      alert(`Erro ao excluir hackathon: ${error.message || 'Tente novamente.'}`);
       setIsDeleting(false);
     }
   };
