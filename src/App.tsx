@@ -2,47 +2,60 @@ import { Code2, Calendar, Users, Trophy, ArrowRight, Zap, Target, Rocket, Briefc
 import { useState } from 'react';
 import { LoginModal } from './components/LoginModal';
 import { Button } from './catalyst/button';
+import { Navbar, NavbarSection, NavbarItem, NavbarSpacer } from './catalyst/navbar';
+import { Heading } from './catalyst/heading';
+import { Text } from './catalyst/text';
+import { Badge } from './catalyst/badge';
 
 function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-white">
-      <header className="border-b border-gray-200">
-        <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Code2 className="w-8 h-8 text-omnihack-primary" />
-            <span className="text-2xl font-bold text-omnihack-primary">OmniHack</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8">
-            <a href="#eventos" className="text-gray-600 hover:text-omnihack-primary transition-colors">Eventos</a>
-            <a href="#como-funciona" className="text-gray-600 hover:text-omnihack-primary transition-colors">Como Funciona</a>
-            <a href="#sobre" className="text-gray-600 hover:text-omnihack-primary transition-colors">Sobre</a>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button plain onClick={() => setIsLoginOpen(true)} color="dark">
-              Entrar
-            </Button>
-            <Button href="/cadastro" color="omnihack-primary">
-              Cadastrar
-            </Button>
-          </div>
-        </nav>
+      <header className="border-b border-zinc-950/10 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <Navbar>
+            <NavbarSection>
+              <Code2 className="w-8 h-8 text-omnihack-primary" />
+              <span className="text-2xl font-bold text-omnihack-primary">OmniHack</span>
+            </NavbarSection>
+            <NavbarSpacer />
+            <NavbarSection className="hidden md:flex">
+              <NavbarItem href="#eventos">
+                Eventos
+              </NavbarItem>
+              <NavbarItem href="#como-funciona">
+                Como Funciona
+              </NavbarItem>
+              <NavbarItem href="#sobre">
+                Sobre
+              </NavbarItem>
+            </NavbarSection>
+            <NavbarSection>
+              <Button plain onClick={() => setIsLoginOpen(true)} color="dark">
+                Entrar
+              </Button>
+              <Button href="/cadastro" color="omnihack-primary">
+                Cadastrar
+              </Button>
+            </NavbarSection>
+          </Navbar>
+        </div>
       </header>
 
       <section className="max-w-7xl mx-auto px-6 py-20 md:py-32">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <div className="inline-flex items-center gap-2 bg-omnihack-light text-omnihack-secondary px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <Badge color="omnihack-secondary" className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm mb-6">
               <Zap className="w-4 h-4" />
-              <span>Plataforma #1 de Hackathons</span>
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              Plataforma #1 de Hackathons
+            </Badge>
+            <Heading level={1} className="text-5xl md:text-6xl mb-6 leading-tight">
               Conecte talentos e empresas através de hackathons
-            </h1>
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+            </Heading>
+            <Text className="text-xl mb-8 leading-relaxed">
               Participe de desafios incríveis, desenvolva soluções inovadoras e mostre seu talento para as melhores empresas do mercado.
-            </p>
+            </Text>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button color="omnihack-primary" className="px-8 py-4 text-lg">
                 Explorar Eventos
@@ -105,8 +118,8 @@ function App() {
       <section className="bg-omnihack-light bg-opacity-30 py-20" id="como-funciona">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Como Funciona</h2>
-            <p className="text-xl text-gray-600">Simples, rápido e eficiente</p>
+            <Heading level={2} className="text-4xl mb-4">Como Funciona</Heading>
+            <Text className="text-xl">Simples, rápido e eficiente</Text>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group h-[400px]">
@@ -199,8 +212,8 @@ function App() {
       <section className="py-20" id="eventos">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Próximos Hackathons</h2>
-            <p className="text-xl text-gray-600">Escolha o desafio perfeito para você</p>
+            <Heading level={2} className="text-4xl mb-4">Próximos Hackathons</Heading>
+            <Text className="text-xl">Escolha o desafio perfeito para você</Text>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
@@ -275,12 +288,12 @@ function App() {
 
       <section className="bg-gradient-to-br from-omnihack-primary to-omnihack-secondary py-20">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <Heading level={2} className="text-4xl md:text-5xl text-white mb-6">
             Pronto para o desafio?
-          </h2>
-          <p className="text-xl text-omnihack-light mb-8">
+          </Heading>
+          <Text className="text-xl text-omnihack-light mb-8">
             Junte-se a milhares de desenvolvedores e empresas inovadoras
-          </p>
+          </Text>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button color="light" className="px-8 py-4 text-lg">
               Começar Agora

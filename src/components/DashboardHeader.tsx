@@ -1,6 +1,8 @@
 import React from 'react';
-import { Briefcase, LogOut } from 'lucide-react';
-import { Button } from '../catalyst/button';
+import { Briefcase, LogOut, ChevronDown } from 'lucide-react';
+import { Navbar, NavbarSection, NavbarSpacer } from '../catalyst/navbar';
+import { Dropdown, DropdownButton, DropdownMenu, DropdownItem, DropdownLabel } from '../catalyst/dropdown';
+import { Avatar } from '../catalyst/avatar';
 
 interface DashboardHeaderProps {
   userName: string;
@@ -12,23 +14,39 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   onLogout,
 }) => {
   return (
-    <nav className="bg-white border-b border-gray-200 shadow-sm">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-            <Briefcase className="w-6 h-6 text-blue-600" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-gray-900">
-              Dashboard da Empresa
-            </h1>
-            <p className="text-sm text-gray-500">{userName}</p>
-          </div>
-        </div>
-        <Button plain color="dark" onClick={onLogout}>
-          <LogOut className="w-5 h-5" />
-          <span>Sair</span>
-        </Button>
+    <nav className="bg-white border-b border-zinc-950/10">
+      <div className="max-w-6xl mx-auto px-6">
+        <Navbar>
+          <NavbarSection>
+            <div className="w-12 h-12 bg-omnihack-primary/10 rounded-lg flex items-center justify-center">
+              <Briefcase className="w-6 h-6 text-omnihack-primary" />
+            </div>
+            <div>
+              <h1 className="text-lg font-semibold text-zinc-950">
+                Dashboard da Empresa
+              </h1>
+              <p className="text-sm text-zinc-500">{userName}</p>
+            </div>
+          </NavbarSection>
+          <NavbarSpacer />
+          <NavbarSection>
+            <Dropdown>
+              <DropdownButton as="div" className="flex items-center gap-2 cursor-pointer">
+                <Avatar
+                  initials={userName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+                  className="size-10 bg-omnihack-primary text-white"
+                />
+                <ChevronDown className="w-4 h-4 text-zinc-500" />
+              </DropdownButton>
+              <DropdownMenu>
+                <DropdownItem onClick={onLogout}>
+                  <LogOut data-slot="icon" />
+                  <DropdownLabel>Sair</DropdownLabel>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </NavbarSection>
+        </Navbar>
       </div>
     </nav>
   );

@@ -1,6 +1,8 @@
 import React from 'react';
 import { SignupForm } from '../components/SignupForm';
 import { Code2 } from 'lucide-react';
+import { Heading } from '../catalyst/heading';
+import { Text } from '../catalyst/text';
 
 export const Cadastro: React.FC = () => {
   return (
@@ -11,28 +13,28 @@ export const Cadastro: React.FC = () => {
             <Code2 className="w-8 h-8" />
             <span className="text-2xl font-bold">OmniHack</span>
           </a>
-          <h1 className="text-4xl font-bold text-gray-900 mb-3">
+          <Heading level={1} className="text-4xl/tight mb-3">
             Criar conta na OmniHack
-          </h1>
-          <p className="text-lg text-gray-600">
+          </Heading>
+          <Text className="text-lg">
             Escolha seu tipo de perfil e comece agora
-          </p>
+          </Text>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <SignupForm />
         </div>
 
-        <p className="text-center text-gray-500 text-sm mt-6">
+        <Text className="text-center text-sm mt-6">
           Ao criar uma conta, você concorda com nossos{' '}
-          <a href="#" className="text-omnihack-primary hover:underline">
+          <a href="#" className="text-omnihack-primary hover:underline font-medium">
             Termos de Uso
           </a>{' '}
           e{' '}
-          <a href="#" className="text-omnihack-primary hover:underline">
+          <a href="#" className="text-omnihack-primary hover:underline font-medium">
             Política de Privacidade
           </a>
-        </p>
+        </Text>
       </div>
     </div>
   );
