@@ -1,6 +1,7 @@
 import { Code2, Calendar, Users, Trophy, ArrowRight, Zap, Target, Rocket, Briefcase } from 'lucide-react';
 import { useState } from 'react';
 import { LoginModal } from './components/LoginModal';
+import { Button } from './catalyst/button';
 
 function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -19,15 +20,12 @@ function App() {
             <a href="#sobre" className="text-gray-600 hover:text-omnihack-primary transition-colors">Sobre</a>
           </div>
           <div className="flex items-center gap-4">
-            <button
-              onClick={() => setIsLoginOpen(true)}
-              className="text-gray-700 hover:text-omnihack-primary font-medium transition-colors"
-            >
+            <Button plain onClick={() => setIsLoginOpen(true)} color="dark">
               Entrar
-            </button>
-            <a href="/cadastro">
-              <button className="bg-omnihack-primary text-white px-6 py-2.5 rounded-lg hover:bg-omnihack-secondary transition-colors font-medium">Cadastrar</button>
-            </a>
+            </Button>
+            <Button href="/cadastro" color="omnihack-primary">
+              Cadastrar
+            </Button>
           </div>
         </nav>
       </header>
@@ -46,13 +44,13 @@ function App() {
               Participe de desafios incríveis, desenvolva soluções inovadoras e mostre seu talento para as melhores empresas do mercado.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="bg-omnihack-primary text-white px-8 py-4 rounded-lg hover:bg-omnihack-secondary transition-colors font-semibold text-lg flex items-center justify-center gap-2 group">
+              <Button color="omnihack-primary" className="px-8 py-4 text-lg">
                 Explorar Eventos
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button className="border-2 border-omnihack-primary text-omnihack-primary px-8 py-4 rounded-lg hover:bg-omnihack-light transition-colors font-semibold text-lg">
+              </Button>
+              <Button outline color="omnihack-primary" className="px-8 py-4 text-lg">
                 Cadastrar Hackathon
-              </button>
+              </Button>
             </div>
           </div>
           <div className="relative">
@@ -264,9 +262,9 @@ function App() {
                       <span>{event.participants} inscritos</span>
                     </div>
                   </div>
-                  <button className={`w-full bg-omnihack-primary text-white py-3 rounded-lg hover:bg-omnihack-secondary transition-colors font-medium ${colors.button}`}>
+                  <Button color="omnihack-primary" className="w-full">
                     Ver Detalhes
-                  </button>
+                  </Button>
                 </div>
               </div>
             );
@@ -284,12 +282,12 @@ function App() {
             Junte-se a milhares de desenvolvedores e empresas inovadoras
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-omnihack-primary px-8 py-4 rounded-lg hover:bg-omnihack-light transition-colors font-semibold text-lg">
+            <Button color="light" className="px-8 py-4 text-lg">
               Começar Agora
-            </button>
-            <button className="border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-omnihack-primary transition-colors font-semibold text-lg">
+            </Button>
+            <Button outline color="light" className="px-8 py-4 text-lg">
               Sou uma Empresa
-            </button>
+            </Button>
           </div>
         </div>
       </section>

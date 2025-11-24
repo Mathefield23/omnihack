@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { X, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import { Dialog, DialogTitle, DialogDescription, DialogBody, DialogActions } from '../catalyst/dialog';
+import { Field, Label } from '../catalyst/fieldset';
+import { Input } from '../catalyst/input';
+import { Button } from '../catalyst/button';
 import { supabase } from '../lib/supabase';
 
 interface Hackathon {
@@ -114,45 +118,28 @@ export const CreateHackathonModal: React.FC<CreateHackathonModalProps> = ({
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl mx-4 p-8 max-h-[90vh] overflow-y-auto">
-        <button
-          onClick={handleClose}
-          disabled={loading}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50"
-        >
-          <X className="w-6 h-6" />
-        </button>
+    <Dialog open={isOpen} onClose={handleClose} size="2xl">
+      <DialogTitle>
+        {editingHackathon ? 'Editar Hackathon' : 'Cadastrar Novo Hackathon'}
+      </DialogTitle>
+      <DialogDescription>
+        {editingHackathon
+          ? 'Atualize os dados do hackathon'
+          : 'Preencha os dados para criar um novo hackathon'}
+      </DialogDescription>
+      <DialogBody>
 
-        <div className="mb-6">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            {editingHackathon ? 'Editar Hackathon' : 'Cadastrar Novo Hackathon'}
-          </h2>
-          <p className="text-gray-600">
-            {editingHackathon
-              ? 'Atualize os dados do hackathon'
-              : 'Preencha os dados para criar um novo hackathon'}
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
             <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-sm text-red-800">{error}</p>
             </div>
           )}
 
-          <div>
-            <label
-              htmlFor="nome"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Nome do Hackathon
-            </label>
-            <input
+          <Field>
+            <Label htmlFor="nome">Nome do Hackathon</Label>
+            <Input
               id="nome"
               type="text"
               value={nome}
@@ -160,37 +147,28 @@ export const CreateHackathonModal: React.FC<CreateHackathonModalProps> = ({
               placeholder="Ex: Hackathon de Inovação 2024"
               required
               disabled={loading}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-omnihack-primary focus:border-omnihack-primary transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             />
-          </div>
+          </Field>
 
-          <div>
-            <label
-              htmlFor="descricao"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Descrição
-            </label>
-            <textarea
-              id="descricao"
-              value={descricao}
-              onChange={(e) => setDescricao(e.target.value)}
-              placeholder="Descreva os objetivos e temas do hackathon..."
-              required
-              disabled={loading}
-              rows={4}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-omnihack-primary focus:border-omnihack-primary transition-all outline-none resize-none disabled:opacity-50 disabled:cursor-not-allowed"
-            />
-          </div>
+          <Field>
+            <Label htmlFor="descricao">Descrição</Label>
+            <span data-slot="control" className="relative block w-full before:absolute before:inset-px before:rounded-[calc(theme(borderRadius.lg)-1px)] before:bg-white before:shadow after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:ring-inset after:ring-transparent sm:after:focus-within:ring-2 sm:after:focus-within:ring-omnihack-primary">
+              <textarea
+                id="descricao"
+                value={descricao}
+                onChange={(e) => setDescricao(e.target.value)}
+                placeholder="Descreva os objetivos e temas do hackathon..."
+                required
+                disabled={loading}
+                rows={4}
+                className="relative block w-full appearance-none rounded-lg px-[calc(theme(spacing[3.5])-1px)] py-[calc(theme(spacing[2.5])-1px)] sm:px-[calc(theme(spacing.3)-1px)] sm:py-[calc(theme(spacing[1.5])-1px)] text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 border border-zinc-950/10 hover:border-zinc-950/20 bg-transparent focus:outline-none resize-none disabled:opacity-50"
+              />
+            </span>
+          </Field>
 
-          <div>
-            <label
-              htmlFor="premio"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Prêmio (R$)
-            </label>
-            <input
+          <Field>
+            <Label htmlFor="premio">Prêmio (R$)</Label>
+            <Input
               id="premio"
               type="number"
               min="0"
@@ -200,41 +178,34 @@ export const CreateHackathonModal: React.FC<CreateHackathonModalProps> = ({
               placeholder="10000"
               required
               disabled={loading}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-omnihack-primary focus:border-omnihack-primary transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             />
-          </div>
+          </Field>
 
-          <div>
-            <label
-              htmlFor="data"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Data do Evento
-            </label>
-            <input
+          <Field>
+            <Label htmlFor="data">Data do Evento</Label>
+            <Input
               id="data"
               type="date"
               value={data}
               onChange={(e) => setData(e.target.value)}
               required
               disabled={loading}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-omnihack-primary focus:border-omnihack-primary transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             />
-          </div>
+          </Field>
 
-          <div className="flex gap-3 pt-4">
-            <button
+          <DialogActions>
+            <Button
               type="button"
               onClick={handleClose}
               disabled={loading}
-              className="flex-1 bg-gray-100 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              plain
             >
               Cancelar
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-omnihack-primary text-white py-3 px-6 rounded-lg font-semibold hover:bg-omnihack-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              color="omnihack-primary"
             >
               {loading ? (
                 <>
@@ -244,10 +215,10 @@ export const CreateHackathonModal: React.FC<CreateHackathonModalProps> = ({
               ) : (
                 editingHackathon ? 'Atualizar Hackathon' : 'Criar Hackathon'
               )}
-            </button>
-          </div>
+            </Button>
+          </DialogActions>
         </form>
-      </div>
-    </div>
+      </DialogBody>
+    </Dialog>
   );
 };

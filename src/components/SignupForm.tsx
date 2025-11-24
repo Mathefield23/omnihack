@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Input } from './Input';
+import { InputField } from './InputField';
+import { Field, Label, ErrorMessage } from '../catalyst/fieldset';
+import { Select } from '../catalyst/select';
+import { Button } from '../catalyst/button';
 import { supabase } from '../lib/supabase';
 import { Loader2 } from 'lucide-react';
 
@@ -193,7 +196,7 @@ export const SignupForm: React.FC = () => {
         </div>
       )}
 
-      <Input
+      <InputField
         id="fullName"
         name="fullName"
         type="text"
@@ -205,7 +208,7 @@ export const SignupForm: React.FC = () => {
         disabled={loading}
       />
 
-      <Input
+      <InputField
         id="email"
         name="email"
         type="email"
@@ -217,7 +220,7 @@ export const SignupForm: React.FC = () => {
         disabled={loading}
       />
 
-      <Input
+      <InputField
         id="password"
         name="password"
         type="password"
@@ -229,7 +232,7 @@ export const SignupForm: React.FC = () => {
         disabled={loading}
       />
 
-      <Input
+      <InputField
         id="confirmPassword"
         name="confirmPassword"
         type="password"
@@ -241,47 +244,28 @@ export const SignupForm: React.FC = () => {
         disabled={loading}
       />
 
-      <div className="w-full">
-        <label
-          htmlFor="userType"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          Tipo de usuário
-        </label>
-        <select
+      <Field>
+        <Label htmlFor="userType">Tipo de usuário</Label>
+        <Select
           id="userType"
           name="userType"
           value={formData.userType}
           onChange={handleChange}
           disabled={loading}
-          className={`
-            w-full px-4 py-3 rounded-lg border
-            ${
-              errors.userType
-                ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                : 'border-gray-300 focus:ring-omnihack-primary focus:border-omnihack-primary'
-            }
-            focus:ring-2 focus:outline-none
-            transition-all duration-200
-            bg-white
-          `}
+          data-invalid={errors.userType ? '' : undefined}
         >
           <option value="">Selecione uma opção</option>
           <option value="empresa">Empresa</option>
           <option value="desenvolvedor">Desenvolvedor</option>
-        </select>
-        {errors.userType && (
-          <p className="mt-2 text-sm text-red-600">{errors.userType}</p>
-        )}
-      </div>
+        </Select>
+        {errors.userType && <ErrorMessage>{errors.userType}</ErrorMessage>}
+      </Field>
 
-      <button
+      <Button
         type="submit"
         disabled={loading}
-        className="w-full bg-omnihack-primary text-white py-3 px-6 rounded-lg font-semibold
-                   hover:bg-omnihack-accent transition-colors duration-200
-                   disabled:opacity-50 disabled:cursor-not-allowed
-                   flex items-center justify-center gap-2"
+        className="w-full"
+        color="omnihack-primary"
       >
         {loading ? (
           <>
@@ -291,7 +275,7 @@ export const SignupForm: React.FC = () => {
         ) : (
           'Criar conta'
         )}
-      </button>
+      </Button>
 
       <div className="text-center">
         <p className="text-gray-600">

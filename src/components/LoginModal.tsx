@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { X, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Dialog, DialogTitle, DialogDescription, DialogBody, DialogActions } from '../catalyst/dialog';
+import { Field, Label } from '../catalyst/fieldset';
+import { Input } from '../catalyst/input';
+import { Button } from '../catalyst/button';
 import { supabase } from '../lib/supabase';
 
 interface LoginModalProps {
@@ -72,36 +76,22 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-8">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
-          disabled={loading}
-        >
-          <X className="w-6 h-6" />
-        </button>
+    <Dialog open={isOpen} onClose={onClose} size="md">
+      <DialogTitle>Entrar</DialogTitle>
+      <DialogDescription>Acesse sua conta OmniHack</DialogDescription>
+      <DialogBody>
 
-        <div className="mb-6">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Entrar</h2>
-          <p className="text-gray-600">Acesse sua conta OmniHack</p>
-        </div>
-
-        <form onSubmit={handleLogin} className="space-y-5">
+        <form onSubmit={handleLogin} className="space-y-6">
           {error && (
             <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-sm text-red-800">{error}</p>
             </div>
           )}
 
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Email
-            </label>
-            <input
+          <Field>
+            <Label htmlFor="email">Email</Label>
+            <Input
               id="email"
               type="email"
               value={email}
@@ -109,15 +99,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
               placeholder="seu@email.com"
               required
               disabled={loading}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             />
-          </div>
+          </Field>
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-              Senha
-            </label>
-            <input
+          <Field>
+            <Label htmlFor="password">Senha</Label>
+            <Input
               id="password"
               type="password"
               value={password}
@@ -125,39 +112,43 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
               placeholder="Digite sua senha"
               required
               disabled={loading}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             />
-          </div>
+          </Field>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Entrando...
-              </>
-            ) : (
-              'Entrar'
-            )}
-          </button>
+          <DialogActions>
+            <Button plain onClick={onClose} type="button" disabled={loading}>
+              Cancelar
+            </Button>
+            <Button
+              type="submit"
+              disabled={loading}
+              color="omnihack-primary"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Entrando...
+                </>
+              ) : (
+                'Entrar'
+              )}
+            </Button>
+          </DialogActions>
 
-          <div className="text-center pt-4">
-            <p className="text-gray-600">
-              Não tem conta?{' '}
-              <a
-                href="/cadastro"
-                className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-                onClick={onClose}
-              >
-                Cadastre-se
-              </a>
-            </p>
-          </div>
         </form>
-      </div>
-    </div>
+        <div className="text-center pt-4 text-sm">
+          <p className="text-zinc-500">
+            Não tem conta?{' '}
+            <a
+              href="/cadastro"
+              className="text-omnihack-primary hover:text-omnihack-accent font-semibold transition-colors"
+              onClick={onClose}
+            >
+              Cadastre-se
+            </a>
+          </p>
+        </div>
+      </DialogBody>
+    </Dialog>
   );
 };

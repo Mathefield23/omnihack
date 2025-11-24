@@ -11,7 +11,10 @@ export default {
           light: '#EEDAD0',
           gold: '#C0AC71',
         }
-      }
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
     },
   },
   plugins: [],

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Calendar, Trophy, Users, Trash2, Edit } from 'lucide-react';
+import { Button } from '../catalyst/button';
 import { supabase } from '../lib/supabase';
 
 interface Hackathon {
@@ -118,9 +119,9 @@ export const HackathonCard: React.FC<HackathonCardProps> = ({
         </div>
       </div>
 
-      <button className="w-full bg-omnihack-primary text-white py-2 px-4 rounded-lg hover:bg-omnihack-secondary transition-colors font-medium">
+      <Button color="omnihack-primary" className="w-full">
         Ver detalhes
-      </button>
+      </Button>
     </div>
   );
 };

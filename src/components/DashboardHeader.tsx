@@ -1,5 +1,6 @@
 import React from 'react';
 import { Briefcase, LogOut } from 'lucide-react';
+import { Button } from '../catalyst/button';
 
 interface DashboardHeaderProps {
   userName: string;
@@ -24,13 +25,10 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             <p className="text-sm text-gray-500">{userName}</p>
           </div>
         </div>
-        <button
-          onClick={onLogout}
-          className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
-        >
+        <Button plain color="dark" onClick={onLogout}>
           <LogOut className="w-5 h-5" />
           <span>Sair</span>
-        </button>
+        </Button>
       </div>
     </nav>
   );
