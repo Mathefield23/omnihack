@@ -19,10 +19,15 @@ export const Desenvolvedor = () => {
           return;
         }
 
+        if (user.id !== id) {
+          navigate('/');
+          return;
+        }
+
         const { data, error } = await supabase
           .from('profiles')
           .select('*')
-          .eq('id', id)
+          .eq('id', user.id)
           .maybeSingle();
 
         if (error) throw error;
