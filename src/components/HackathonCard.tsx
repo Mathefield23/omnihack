@@ -42,6 +42,21 @@ export const HackathonCard: React.FC<HackathonCardProps> = ({
     setIsDeleting(true);
 
     try {
+      // Verificar sessão do usuário
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log('Session exists:', !!session);
+      console.log('User ID:', session?.user?.id);
+
+      // Verificar o hackathon antes de deletar
+      const { data: hackathon } = await supabase
+        .from('hackathons')
+        .select('empresa_id')
+        .eq('id', id)
+        .maybeSingle();
+
+      console.log('Hackathon empresa_id:', hackathon?.empresa_id);
+      console.log('Match:', session?.user?.id === hackathon?.empresa_id);
+
       const { error } = await supabase
         .from('hackathons')
         .update({ deleted_at: new Date().toISOString() })
