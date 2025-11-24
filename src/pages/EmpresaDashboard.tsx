@@ -31,6 +31,7 @@ export const EmpresaDashboard = () => {
   const [totalPremios, setTotalPremios] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingHackathon, setEditingHackathon] = useState<Hackathon | null>(null);
 
   const fetchData = async () => {
     try {
@@ -124,6 +125,21 @@ export const EmpresaDashboard = () => {
     }
   };
 
+  const handleHackathonEdit = (hackathon: Hackathon) => {
+    setEditingHackathon(hackathon);
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setEditingHackathon(null);
+  };
+
+  const handleCreateClick = () => {
+    setEditingHackathon(null);
+    setIsModalOpen(true);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -149,20 +165,22 @@ export const EmpresaDashboard = () => {
           loading={false}
         />
 
-        <HackathonSectionHeader onCreateClick={() => setIsModalOpen(true)} />
+        <HackathonSectionHeader onCreateClick={handleCreateClick} />
 
         <HackathonList
           hackathons={hackathons}
           loading={false}
           onHackathonDeleted={handleHackathonDeleted}
+          onHackathonEdit={handleHackathonEdit}
         />
       </div>
 
       <CreateHackathonModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleModalClose}
         onSuccess={handleHackathonCreated}
         empresaId={id!}
+        editingHackathon={editingHackathon}
       />
     </div>
   );

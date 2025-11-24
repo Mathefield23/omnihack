@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Trophy, Users, Trash2 } from 'lucide-react';
+import { Calendar, Trophy, Users, Trash2, Edit } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface Hackathon {
@@ -14,11 +14,13 @@ interface Hackathon {
 interface HackathonCardProps {
   hackathon: Hackathon;
   onDelete: (id: string) => void;
+  onEdit: (hackathon: Hackathon) => void;
 }
 
 export const HackathonCard: React.FC<HackathonCardProps> = ({
   hackathon,
   onDelete,
+  onEdit,
 }) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -69,16 +71,25 @@ export const HackathonCard: React.FC<HackathonCardProps> = ({
 
   return (
     <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow relative">
-      <button
-        onClick={handleDelete}
-        disabled={isDeleting}
-        className="absolute top-4 right-4 p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        title="Deletar hackathon"
-      >
-        <Trash2 className="w-5 h-5" />
-      </button>
+      <div className="absolute top-4 right-4 flex gap-2">
+        <button
+          onClick={() => onEdit(hackathon)}
+          className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+          title="Editar hackathon"
+        >
+          <Edit className="w-5 h-5" />
+        </button>
+        <button
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          title="Deletar hackathon"
+        >
+          <Trash2 className="w-5 h-5" />
+        </button>
+      </div>
 
-      <h3 className="text-xl font-bold text-gray-900 mb-2 pr-10">
+      <h3 className="text-xl font-bold text-gray-900 mb-2 pr-20">
         {hackathon.nome}
       </h3>
       <p className="text-gray-600 text-sm mb-4 line-clamp-2">

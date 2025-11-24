@@ -15,12 +15,14 @@ interface HackathonListProps {
   hackathons: Hackathon[];
   loading: boolean;
   onHackathonDeleted: (id: string) => void;
+  onHackathonEdit: (hackathon: Hackathon) => void;
 }
 
 export const HackathonList: React.FC<HackathonListProps> = ({
   hackathons,
   loading,
   onHackathonDeleted,
+  onHackathonEdit,
 }) => {
 
   if (loading) {
@@ -69,6 +71,7 @@ export const HackathonList: React.FC<HackathonListProps> = ({
             key={hackathon.id}
             hackathon={hackathon}
             onDelete={onHackathonDeleted}
+            onEdit={onHackathonEdit}
           />
         ))}
       </div>

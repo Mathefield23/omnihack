@@ -2,11 +2,20 @@ import React, { useState } from 'react';
 import { X, Loader2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
+interface Hackathon {
+  id: string;
+  nome: string;
+  descricao: string;
+  premio: number;
+  data: string;
+}
+
 interface CreateHackathonModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
   empresaId: string;
+  editingHackathon?: Hackathon | null;
 }
 
 export const CreateHackathonModal: React.FC<CreateHackathonModalProps> = ({
@@ -14,13 +23,29 @@ export const CreateHackathonModal: React.FC<CreateHackathonModalProps> = ({
   onClose,
   onSuccess,
   empresaId,
+  editingHackathon,
 }) => {
-  const [nome, setNome] = useState('');
-  const [descricao, setDescricao] = useState('');
-  const [premio, setPremio] = useState('');
-  const [data, setData] = useState('');
+  const [nome, setNome] = useState(editingHackathon?.nome || '');
+  const [descricao, setDescricao] = useState(editingHackathon?.descricao || '');
+  const [premio, setPremio] = useState(editingHackathon?.premio.toString() || '');
+  const [data, setData] = useState(editingHackathon?.data || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  React.useEffect(() => {
+    if (editingHackathon) {
+      setNome(editingHackathon.nome);
+      setDescricao(editingHackathon.descricao);
+      setPremio(editingHackathon.premio.toString());
+      setData(editingHackathon.data);
+    } else {
+      setNome('');
+      setDescricao('');
+      setPremio('');
+      setData('');
+    }
+    setError('');
+  }, [editingHackathon, isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,15 +65,29 @@ export const CreateHackathonModal: React.FC<CreateHackathonModalProps> = ({
     setLoading(true);
 
     try {
-      const { error: insertError } = await supabase.from('hackathons').insert({
-        empresa_id: empresaId,
-        nome: nome.trim(),
-        descricao: descricao.trim(),
-        premio: premioNumerico,
-        data,
-      });
+      if (editingHackathon) {
+        const { error: updateError } = await supabase
+          .from('hackathons')
+          .update({
+            nome: nome.trim(),
+            descricao: descricao.trim(),
+            premio: premioNumerico,
+            data,
+          })
+          .eq('id', editingHackathon.id);
 
-      if (insertError) throw insertError;
+        if (updateError) throw updateError;
+      } else {
+        const { error: insertError } = await supabase.from('hackathons').insert({
+          empresa_id: empresaId,
+          nome: nome.trim(),
+          descricao: descricao.trim(),
+          premio: premioNumerico,
+          data,
+        });
+
+        if (insertError) throw insertError;
+      }
 
       setNome('');
       setDescricao('');
@@ -57,8 +96,8 @@ export const CreateHackathonModal: React.FC<CreateHackathonModalProps> = ({
       onSuccess();
       onClose();
     } catch (err: any) {
-      console.error('Error creating hackathon:', err);
-      setError(err.message || 'Erro ao criar hackathon. Tente novamente.');
+      console.error('Error saving hackathon:', err);
+      setError(err.message || `Erro ao ${editingHackathon ? 'atualizar' : 'criar'} hackathon. Tente novamente.`);
     } finally {
       setLoading(false);
     }
@@ -90,10 +129,12 @@ export const CreateHackathonModal: React.FC<CreateHackathonModalProps> = ({
 
         <div className="mb-6">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Cadastrar Novo Hackathon
+            {editingHackathon ? 'Editar Hackathon' : 'Cadastrar Novo Hackathon'}
           </h2>
           <p className="text-gray-600">
-            Preencha os dados para criar um novo hackathon
+            {editingHackathon
+              ? 'Atualize os dados do hackathon'
+              : 'Preencha os dados para criar um novo hackathon'}
           </p>
         </div>
 
@@ -198,10 +239,10 @@ export const CreateHackathonModal: React.FC<CreateHackathonModalProps> = ({
               {loading ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Criando...
+                  {editingHackathon ? 'Atualizando...' : 'Criando...'}
                 </>
               ) : (
-                'Criar Hackathon'
+                editingHackathon ? 'Atualizar Hackathon' : 'Criar Hackathon'
               )}
             </button>
           </div>
