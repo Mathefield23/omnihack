@@ -113,48 +113,83 @@ function App() {
           </div>
           <div className="relative">
             <div className="bg-gradient-to-br from-omnihack-primary to-omnihack-secondary rounded-2xl p-8 shadow-2xl">
-              <div className="bg-white rounded-xl p-6 mb-4">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-omnihack-light rounded-lg flex items-center justify-center">
-                    <Trophy className="w-6 h-6 text-omnihack-secondary" />
+              {loadingHackathons ? (
+                <>
+                  <div className="bg-white rounded-xl p-6 mb-4 animate-pulse">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 bg-zinc-200 rounded-lg"></div>
+                      <div className="flex-1">
+                        <div className="h-5 bg-zinc-200 rounded w-3/4 mb-2"></div>
+                        <div className="h-4 bg-zinc-200 rounded w-1/2"></div>
+                      </div>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="h-4 bg-zinc-200 rounded w-24"></div>
+                      <div className="h-4 bg-zinc-200 rounded w-24"></div>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">Hackathon FinTech 2024</h3>
-                    <p className="text-sm text-gray-500">R$ 50.000 em prêmios</p>
+                  <div className="bg-white rounded-xl p-6 animate-pulse">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 bg-zinc-200 rounded-lg"></div>
+                      <div className="flex-1">
+                        <div className="h-5 bg-zinc-200 rounded w-3/4 mb-2"></div>
+                        <div className="h-4 bg-zinc-200 rounded w-1/2"></div>
+                      </div>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="h-4 bg-zinc-200 rounded w-24"></div>
+                      <div className="h-4 bg-zinc-200 rounded w-24"></div>
+                    </div>
                   </div>
+                </>
+              ) : hackathons.length === 0 ? (
+                <div className="bg-white rounded-xl p-8 text-center">
+                  <p className="text-gray-600">Nenhum hackathon disponível</p>
                 </div>
-                <div className="flex items-center gap-4 text-sm text-gray-600">
-                  <div className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4" />
-                    <span>15-17 Dez</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Users className="w-4 h-4" />
-                    <span>234 inscritos</span>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white rounded-xl p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-omnihack-light rounded-lg flex items-center justify-center">
-                    <Rocket className="w-6 h-6 text-omnihack-gold" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">AI Challenge</h3>
-                    <p className="text-sm text-gray-500">R$ 30.000 em prêmios</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4 text-sm text-gray-600">
-                  <div className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4" />
-                    <span>20-22 Dez</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Users className="w-4 h-4" />
-                    <span>189 inscritos</span>
-                  </div>
-                </div>
-              </div>
+              ) : (
+                <>
+                  {hackathons.slice(0, 2).map((hackathon, index) => {
+                    const icons = [Trophy, Rocket];
+                    const Icon = icons[index] || Trophy;
+                    const formatDate = (dateString: string) => {
+                      const date = new Date(dateString);
+                      return date.toLocaleDateString('pt-BR', {
+                        day: '2-digit',
+                        month: 'short',
+                      });
+                    };
+                    const formatPrize = (value: number) => {
+                      return `R$ ${value.toLocaleString('pt-BR')}`;
+                    };
+
+                    return (
+                      <div key={hackathon.id} className={`bg-white rounded-xl p-6 ${index === 0 ? 'mb-4' : ''}`}>
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-12 h-12 bg-omnihack-light rounded-lg flex items-center justify-center">
+                            <Icon className={`w-6 h-6 ${index === 0 ? 'text-omnihack-secondary' : 'text-omnihack-gold'}`} />
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-gray-900">{hackathon.nome}</h3>
+                            <p className="text-sm text-gray-500">{formatPrize(hackathon.premio)} em prêmios</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4 text-sm text-gray-600">
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-4 h-4" />
+                            <span>{formatDate(hackathon.data)}</span>
+                          </div>
+                          {hackathon.participant_count !== undefined && (
+                            <div className="flex items-center gap-1">
+                              <Users className="w-4 h-4" />
+                              <span>{hackathon.participant_count} inscritos</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </>
+              )}
             </div>
           </div>
         </div>
