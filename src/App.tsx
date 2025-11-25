@@ -6,6 +6,7 @@ import { Navbar, NavbarSection, NavbarItem, NavbarSpacer } from './catalyst/navb
 import { Heading } from './catalyst/heading';
 import { Text } from './catalyst/text';
 import { Badge } from './catalyst/badge';
+import { HackathonCardCatalyst } from './components/HackathonCardCatalyst';
 
 function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -218,70 +219,35 @@ function App() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                title: 'Hackathon FinTech 2024',
-                company: 'Banco Digital',
-                prize: 'R$ 50.000',
-                date: '15-17 Dez',
-                participants: '234',
-                color: 'primary'
+                nome: 'Hackathon FinTech 2024',
+                empresa: 'Banco Digital',
+                premio: 50000,
+                data: '2024-12-15',
+                participant_count: 234,
+                colorScheme: 'primary' as const
               },
               {
-                title: 'AI Challenge',
-                company: 'TechCorp',
-                prize: 'R$ 30.000',
-                date: '20-22 Dez',
-                participants: '189',
-                color: 'accent'
+                nome: 'AI Challenge',
+                empresa: 'TechCorp',
+                premio: 30000,
+                data: '2024-12-20',
+                participant_count: 189,
+                colorScheme: 'accent' as const
               },
               {
-                title: 'Sustentabilidade Tech',
-                company: 'EcoStart',
-                prize: 'R$ 25.000',
-                date: '10-12 Jan',
-                participants: '156',
-                color: 'gold'
+                nome: 'Sustentabilidade Tech',
+                empresa: 'EcoStart',
+                premio: 25000,
+                data: '2025-01-10',
+                participant_count: 156,
+                colorScheme: 'gold' as const
               }
-            ].map((event, index) => {
-              const colorMap = {
-                primary: { from: 'from-omnihack-primary', to: 'to-omnihack-secondary', bg: 'bg-omnihack-light', text: 'text-omnihack-primary', button: 'group-hover:bg-omnihack-primary' },
-                accent: { from: 'from-omnihack-accent', to: 'to-omnihack-primary', bg: 'bg-omnihack-light', text: 'text-omnihack-accent', button: 'group-hover:bg-omnihack-accent' },
-                gold: { from: 'from-omnihack-gold', to: 'to-omnihack-secondary', bg: 'bg-omnihack-light', text: 'text-omnihack-gold', button: 'group-hover:bg-omnihack-gold' }
-              };
-              const colors = colorMap[event.color];
-              return (
-              <div key={index} className="bg-white rounded-xl shadow-sm hover:shadow-xl transition-shadow border border-gray-100 overflow-hidden group">
-                <div className={`h-2 bg-gradient-to-r ${colors.from} ${colors.to}`}></div>
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-1">{event.title}</h3>
-                      <p className="text-sm text-gray-500">{event.company}</p>
-                    </div>
-                    <div className={`w-12 h-12 ${colors.bg} rounded-lg flex items-center justify-center`}>
-                      <Trophy className={`w-6 h-6 ${colors.text}`} />
-                    </div>
-                  </div>
-                  <div className="mb-6">
-                    <div className="text-2xl font-bold text-gray-900 mb-1">{event.prize}</div>
-                    <p className="text-sm text-gray-500">em prêmios</p>
-                  </div>
-                  <div className="flex items-center gap-4 text-sm text-gray-600 mb-6">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>{event.date}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Users className="w-4 h-4" />
-                      <span>{event.participants} inscritos</span>
-                    </div>
-                  </div>
-                  <Button color="omnihack-primary" className="w-full">
-                    Ver Detalhes
-                  </Button>
-                </div>
-              </div>
-            );
-            })}
+            ].map((event, index) => (
+              <HackathonCardCatalyst
+                key={index}
+                hackathon={event}
+              />
+            ))}
           </div>
         </div>
       </section>
