@@ -1,15 +1,59 @@
 import { Code2, Calendar, Users, Trophy, ArrowRight, Zap, Target, Rocket, Briefcase } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LoginModal } from './components/LoginModal';
 import { Button } from './catalyst/button';
 import { Navbar, NavbarSection, NavbarItem, NavbarSpacer } from './catalyst/navbar';
 import { Heading } from './catalyst/heading';
 import { Text } from './catalyst/text';
 import { Badge } from './catalyst/badge';
-import { HackathonCardCatalyst } from './components/HackathonCardCatalyst';
+import { HackathonCardCatalyst, HackathonCardData } from './components/HackathonCardCatalyst';
+import { supabase } from './lib/supabase';
 
 function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [hackathons, setHackathons] = useState<HackathonCardData[]>([]);
+  const [loadingHackathons, setLoadingHackathons] = useState(true);
+
+  useEffect(() => {
+    fetchHackathons();
+  }, []);
+
+  const fetchHackathons = async () => {
+    try {
+      setLoadingHackathons(true);
+      const { data, error } = await supabase
+        .from('hackathons')
+        .select(`
+          id,
+          nome,
+          descricao,
+          premio,
+          data,
+          empresa_id,
+          profiles!hackathons_empresa_id_fkey(full_name)
+        `)
+        .is('deleted_at', null)
+        .order('data', { ascending: true });
+
+      if (error) throw error;
+
+      const formattedHackathons: HackathonCardData[] = (data || []).map((h: any, index: number) => ({
+        id: h.id,
+        nome: h.nome,
+        descricao: h.descricao,
+        premio: parseFloat(h.premio),
+        data: h.data,
+        empresa: h.profiles?.full_name || 'Empresa',
+        colorScheme: (['primary', 'accent', 'gold'] as const)[index % 3],
+      }));
+
+      setHackathons(formattedHackathons);
+    } catch (error) {
+      console.error('Error fetching hackathons:', error);
+    } finally {
+      setLoadingHackathons(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -216,39 +260,33 @@ function App() {
             <Heading level={2} className="text-4xl mb-4">Próximos Hackathons</Heading>
             <Text className="text-xl">Escolha o desafio perfeito para você</Text>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                nome: 'Hackathon FinTech 2024',
-                empresa: 'Banco Digital',
-                premio: 50000,
-                data: '2024-12-15',
-                participant_count: 234,
-                colorScheme: 'primary' as const
-              },
-              {
-                nome: 'AI Challenge',
-                empresa: 'TechCorp',
-                premio: 30000,
-                data: '2024-12-20',
-                participant_count: 189,
-                colorScheme: 'accent' as const
-              },
-              {
-                nome: 'Sustentabilidade Tech',
-                empresa: 'EcoStart',
-                premio: 25000,
-                data: '2025-01-10',
-                participant_count: 156,
-                colorScheme: 'gold' as const
-              }
-            ].map((event, index) => (
-              <HackathonCardCatalyst
-                key={index}
-                hackathon={event}
-              />
-            ))}
-          </div>
+          {loadingHackathons ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-white rounded-xl shadow-sm p-6 animate-pulse ring-1 ring-zinc-950/5">
+                  <div className="h-1 bg-zinc-200 rounded w-full mb-6"></div>
+                  <div className="h-6 bg-zinc-200 rounded w-3/4 mb-3"></div>
+                  <div className="h-4 bg-zinc-200 rounded w-1/2 mb-6"></div>
+                  <div className="h-8 bg-zinc-200 rounded w-2/3 mb-4"></div>
+                  <div className="h-4 bg-zinc-200 rounded w-full mb-2"></div>
+                  <div className="h-10 bg-zinc-200 rounded w-full"></div>
+                </div>
+              ))}
+            </div>
+          ) : hackathons.length === 0 ? (
+            <div className="col-span-full text-center py-12">
+              <Text className="text-xl">Nenhum hackathon disponível no momento.</Text>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {hackathons.map((hackathon) => (
+                <HackathonCardCatalyst
+                  key={hackathon.id}
+                  hackathon={hackathon}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
