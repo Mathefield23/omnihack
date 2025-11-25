@@ -49,7 +49,7 @@ export const HackathonCard: React.FC<HackathonCardProps> = ({
 
       const { data, error } = await supabase
         .from('hackathons')
-        .update({ deleted_at: new Date() })
+        .update({ deleted_at: Date.now()})
         .eq('id', hackathon.id)
         .select();
 
