@@ -67,7 +67,7 @@ export const HackathonCardCatalyst: React.FC<HackathonCardCatalystProps> = ({
         onDelete(hackathon.id);
       }
     } catch (error) {
-      console.error('Error deleting hackathon:', error);
+      
       alert(`Erro ao deletar hackathon: ${error instanceof Error ? error.message : 'Tente novamente.'}`);
     } finally {
       setIsDeleting(false);
