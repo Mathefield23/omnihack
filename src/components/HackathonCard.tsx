@@ -56,7 +56,7 @@ export const HackathonCard: React.FC<HackathonCardProps> = ({
         throw error;
       }
 
-      console.log('Hackathon deleted successfully');
+      
       onDelete(hackathon.id);
     } catch (error) {
       console.error('Error deleting hackathon:', error);
